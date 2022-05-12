@@ -8,14 +8,14 @@ const EmployeesPage = () => {
   const initialState = {
     101: {
       isSelected: false,
-      employeeId: "111",
+      employeeId: "101",
       firstname: "Bhakti",
       lastname: "Soman",
       email: "bhakti@gmail.com",
     },
     102: {
       isSelected: false,
-      employeeId: "112",
+      employeeId: "102",
       firstname: "Sanika",
       lastname: "Soman",
       email: "sanika@gmail.com",
@@ -34,15 +34,24 @@ const EmployeesPage = () => {
   
 
   const [addShowNewRow, setAddShowNewRow] = useState(false); //new input box row
-  const [employees, setEmployees] = useState(initialState); //to add employees in table
-  const [formState, setFormState] = useState(""); //fetch input value
+  const [employees, setEmployees] = useState(initialState); //to add new row employees in table
+  const [formState, setFormState] = useState({}); //fetch input value
+
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
+  console.log("formstate=>",formState)
+
 
   const handleOnAdd = () => {
-    setEmployees({ ...employees, formState });
+    console.log({ ...employees, formState })
+
+    let employeesData=employees
+    let employeeId=formState["employeeId"]
+    employeesData[employeeId]=formState
+    setEmployees({ ...employees });
     setFormState("")
+    console.log("data",employeesData)
   };
   console.log("employees", employees);
 
@@ -85,7 +94,6 @@ const EmployeesPage = () => {
                   Edit
                 </Button>
                 <Button variant="secondary" size="sm" className="btn-margin">
-                  {" "}
                   Delete
                 </Button>
               </tr>
@@ -95,7 +103,7 @@ const EmployeesPage = () => {
            {Object.values(employees).map((emp,index)=>{
              return(
                <>
-               <tr>
+               <tr key={index}>
                 <td><input
                     type="checkbox"
                     className="checkbox-margin"
