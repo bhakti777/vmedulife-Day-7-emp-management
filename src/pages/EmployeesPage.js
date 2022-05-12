@@ -47,7 +47,7 @@ const EmployeesPage = () => {
     console.log({ ...employees, formState })
 
     let employeesData=employees
-    let employeeId=formState["employeeId"]
+    let employeeId=formState["employeeId"] //handling object keys 
     employeesData[employeeId]=formState
     setEmployees({ ...employees });
     setFormState("")
