@@ -36,6 +36,7 @@ const EmployeesPage = () => {
   const [addShowNewRow, setAddShowNewRow] = useState(false); //new input box row
   const [employees, setEmployees] = useState(initialState); //to add new row employees in table
   const [formState, setFormState] = useState({}); //fetch input value
+  const [selectedEmp,setSelectedEmp]=useState({});
 
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
@@ -55,8 +56,19 @@ const EmployeesPage = () => {
   };
   console.log("employees", employees);
 
-  const displayButtons = () => {
+  const onCheckDisplayButtons = (e,index) => {
+    const employeeClone=Object.values(employees)
+    console.log("e",e)
+    if(e.target.checked){
+      employeeClone[index].isSelected=true
     setAddShowNewRow(true);
+    }
+    else{
+      employeeClone[index].isSelected=false
+      setAddShowNewRow(false)
+    }
+
+    // setAddShowNewRow(true)
   };
 
 
@@ -107,7 +119,8 @@ const EmployeesPage = () => {
                 <td><input
                     type="checkbox"
                     className="checkbox-margin"
-                    onClick={() => displayButtons(true)}
+                    checked={emp.isSelected}
+                    onClick={(e) => onCheckDisplayButtons(e,index)}
                   />
                 </td>
                 <td>{index+1}</td>
