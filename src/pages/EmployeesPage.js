@@ -28,7 +28,21 @@ const EmployeesPage = () => {
   const handleCloseAdd = () => setShowAdd(false);
 
   const [showEdit, setShowEdit] = useState(false);
-  const handleShowEdit = () => setShowEdit(true);
+  
+  
+  const handleShowEdit = () =>{
+    if(selectedEmp.length > 0){
+      
+     let [selectedEmployee] = Object.values(employees).filter(item=> item.employeeId == selectedEmp[0])
+    
+      if(selectedEmployee != undefined){
+        setSelectedEmployeeForEdit(selectedEmployee)
+        setShowEdit(true);
+      }
+     
+    }
+    
+  } 
   const handleCloseEdit = () => setShowEdit(false);
 
   
@@ -36,13 +50,19 @@ const EmployeesPage = () => {
   const [addShowNewRow, setAddShowNewRow] = useState(false); //new input box row
   const [employees, setEmployees] = useState(initialState); //to add new row employees in table
   const [formState, setFormState] = useState({}); //fetch input value
-  const [selectedEmp,setSelectedEmp]=useState({});
+  const [selectedEmp,setSelectedEmp]=useState([]);
+
+  const [selectedEmployeeForEdit, setSelectedEmployeeForEdit] = useState({});
 
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
   console.log("formstate=>",formState)
 
+  // const handleOnChangeEdit = (event) => {
+  //   setSelectedEmp({ ...selectedEmp, [event.target.name]: event.target.value });
+  // };
+  console.log("formstate=>",formState)
 
   const handleOnAdd = () => {
     console.log({ ...employees, formState })
@@ -56,22 +76,30 @@ const EmployeesPage = () => {
   };
   console.log("employees", employees);
 
-  const onCheckDisplayButtons = (e,index) => {
-    const employeeClone=Object.values(employees)
-    console.log("e",e)
-    if(e.target.checked){
-      employeeClone[index].isSelected=true
-    setAddShowNewRow(true);
-    }
-    else{
-      employeeClone[index].isSelected=false
-      setAddShowNewRow(false)
-    }
+  const onCheckDisplayButtons = (employeeId) => {
+   console.log("emp id",employeeId)
+   let selectedEmployees = selectedEmp;
+   console.log(selectedEmployees);
+   console.log(selectedEmployees.includes(employeeId)); 
+    if(selectedEmployees.includes(employeeId)){
+      // if employee id exists in array then remove  it (i.e uncheck for check box)
+      console.log("Uncheck Now")
+      selectedEmployees = selectedEmployees.filter(id => id != employeeId);
+      console.log(selectedEmployees);
+    }else{
+      // if employee id is not exists in array then push it (i.e check for check box)
+      selectedEmployees.push(employeeId);
 
-    // setAddShowNewRow(true)
+    }
+    
+    setSelectedEmp([...selectedEmployees])
   };
+  console.log("selected employee=>",selectedEmp)
 
-
+  const handleUpdateData=()=>{
+    // const employeeClone=Object.values(employees)
+    // const updatedData=employeeClone
+  }
 
 
   return (
@@ -95,7 +123,7 @@ const EmployeesPage = () => {
           </thead>
           <tbody>
 
-            {addShowNewRow && (
+          { selectedEmp.length > 0 && (
               <tr>
                 <Button
                   variant="secondary"
@@ -111,32 +139,32 @@ const EmployeesPage = () => {
               </tr>
             )}
 
-
-           {Object.values(employees).map((emp,index)=>{
+           {Object.keys(employees).length>0 && Object.values(employees).map((emp,index)=>{
              return(
                <>
-               <tr key={index}>
-                <td><input
-                    type="checkbox"
-                    className="checkbox-margin"
-                    checked={emp.isSelected}
-                    onClick={(e) => onCheckDisplayButtons(e,index)}
-                  />
-                </td>
-                <td>{index+1}</td>
-                <td>{emp.employeeId}</td>
-                <td>
-                {emp.firstname}
-                </td>
-                <td>
-                  {emp.lastname}
-                </td>
-                <td>
-                  {emp.email}
-                </td>
-              </tr>
+                   
 
-            
+
+                  <tr key={index}>
+                    <td><input
+                        type="checkbox"
+                        className="checkbox-margin"
+                        checked={selectedEmp.includes(emp.employeeId)}
+                        onChange={() => onCheckDisplayButtons(emp.employeeId)}
+                      />
+                    </td>
+                    <td>{index+1}</td>
+                    <td>{emp.employeeId}</td>
+                    <td>
+                    {emp.firstname}
+                    </td>
+                    <td>
+                      {emp.lastname}
+                    </td>
+                    <td>
+                      {emp.email}
+                    </td>
+                  </tr>
                </>
              )
            })}
@@ -146,8 +174,8 @@ const EmployeesPage = () => {
 
         <div>
            <AddEmployeesModal 
-           showAdd={showAdd} 
-           employees={employees}
+            showAdd={showAdd} 
+            employees={employees}
             handleOnChange={handleOnChange} 
             handleCloseAdd={handleCloseAdd} 
             handleOnAdd={handleOnAdd}
@@ -156,8 +184,12 @@ const EmployeesPage = () => {
 
         <div>
           <EditEmployeesModal 
-          showEdit={showEdit} 
-          handleCloseEdit={handleCloseEdit} />
+            showEdit={showEdit} 
+            handleCloseEdit={handleCloseEdit} 
+            selectedEmployeeForEdit={selectedEmployeeForEdit}
+            handleUpdateData={handleUpdateData}
+            // handleOnChangeEdit={handleOnChangeEdit}
+          />
         </div>
       </div>
     </>

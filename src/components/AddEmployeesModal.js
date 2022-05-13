@@ -22,7 +22,7 @@ const AddEmployeesModal=({showAdd,employees,handleOnChange,handleCloseAdd,handle
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter your Id"  name="employeeId"
-                      value={employees.employeesloyeeId}
+                      value={employees.employeeId}
                       onChange={handleOnChange}/>
                   </Col>
                 </Form.Group>
