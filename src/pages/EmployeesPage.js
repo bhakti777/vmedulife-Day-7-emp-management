@@ -28,94 +28,108 @@ const EmployeesPage = () => {
   const handleCloseAdd = () => setShowAdd(false);
 
   const [showEdit, setShowEdit] = useState(false);
-  
-  
-  const handleShowEdit = () =>{
-    if(selectedEmp.length > 0){
-      
-     let [selectedEmployee] = Object.values(employeeDetails).filter(item=> item.employeeId == selectedEmp[0])
-    
-      if(selectedEmployee != undefined){
-        setSelectedEmployeeForEdit(selectedEmployee)
+
+  const handleShowEdit = () => {
+    if (selectedEmp.length > 0) {
+      let [selectedEmployee] = Object.values(employeeDetails).filter(
+        (item) => item.employeeId == selectedEmp[0]
+      );
+
+      if (selectedEmployee != undefined) {
+        setSelectedEmployeeForEdit(selectedEmployee);
         setShowEdit(true);
       }
-     
     }
-    
-  } 
+  };
   const handleCloseEdit = () => setShowEdit(false);
 
-    const [employeeDetails, setEmployeeDetails] = useState(initialState); //to add new row employees in table
+  const [employeeDetails, setEmployeeDetails] = useState(initialState); //to add new row employees in table
   const [formState, setFormState] = useState({}); //fetch input value
-  const [selectedEmp,setSelectedEmp]=useState([]);
+  const [selectedEmp, setSelectedEmp] = useState([]);
   const [selectedEmployeeForEdit, setSelectedEmployeeForEdit] = useState({});
-  const [updatedEmployee,setUpdatedEmployee]=useState({})
+  const [updatedEmployee, setUpdatedEmployee] = useState({});
 
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
 
-  console.log("formstate=>",formState)
-  console.log("formstate=>",formState)
+  console.log("formstate=>", formState);
+  console.log("formstate=>", formState);
 
-  
   const handleOnAdd = () => {
-    console.log({ ...employeeDetails, formState })
+    console.log({ ...employeeDetails, formState });
 
-    let employeesData=employeeDetails
-    let employeeId=formState["employeeId"] //handling object keys 
-    employeesData[employeeId]=formState
-    setEmployeeDetails({ ...employeesData});
-    setFormState("")
-    console.log("data",employeesData)
-  }; 
+    let employeesData = employeeDetails;
+    let employeeId = formState["employeeId"]; //handling object keys
+    employeesData[employeeId] = formState;
+    setEmployeeDetails({ ...employeesData });
+    setFormState("");
+    console.log("data", employeesData);
+  };
   console.log("employeesDetails", employeeDetails);
 
   const onCheckDisplayButtons = (employeeId) => {
-   console.log("emp id",employeeId)  
-   let selectedEmployees = selectedEmp;
-   console.log(selectedEmployees);
-   console.log(selectedEmployees.includes(employeeId)); 
-    if(selectedEmployees.includes(employeeId)){
+    console.log("emp id", employeeId);
+    let selectedEmployees = selectedEmp;
+    console.log(selectedEmployees);
+    console.log(selectedEmployees.includes(employeeId));
+    if (selectedEmployees.includes(employeeId)) {
       // if employee id exists in array then remove  it (i.e uncheck for check box)
-      console.log("Uncheck Now")
-      selectedEmployees = selectedEmployees.filter(id => id != employeeId);
+      console.log("Uncheck Now");
+      selectedEmployees = selectedEmployees.filter((id) => id != employeeId);
       console.log(selectedEmployees);
-    }else{
+    } else {
       // if employee id is not exists in array then push it (i.e check for check box)
       selectedEmployees.push(employeeId);
-
     }
-    
-    setSelectedEmp([...selectedEmployees])
+    setSelectedEmp([...selectedEmployees]);
   };
-  console.log("selected employee=>",selectedEmp)
+  console.log("selected employee=>", selectedEmp);
 
-  const handleUpdateData=(employee)=>{
-
-    const employeesList = employeeDetails;
-    
+  const handleUpdateData = (employee) => {
     // updatedList
-    const updatedId = employee["employeeId"]
-    
-    Object.keys(employeesList).map(keys=>{
-      let selectedEmployee = employeesList[keys];
-      if(selectedEmployee.employeeId == updatedId){
-          employeesList[keys] = employee;
-      }
-    })
-    
-    setEmployeeDetails({...employeesList})
-    console.log("updated employees=>",employeesList)
-  }
+    const employeesList = employeeDetails;
+    const updatedId = employee["employeeId"];
 
+    Object.keys(employeesList).map((keys) => {
+      let selectedEmployee = employeesList[keys];
+      if (selectedEmployee.employeeId == updatedId) {
+        employeesList[keys] = employee;
+      }
+    });
+    setEmployeeDetails({ ...employeesList });
+    console.log("updated employees=>", employeesList);
+  };
+
+  const deleteHandler = (indexToDelete) => {
+    // if(employeeClone[indexToDelete[0]]!=undefined){
+    //   console.log("indexToDelete", indexToDelete[0]);
+    //   delete employeeClone[indexToDelete[0]];
+    // }
+    const employeeClone = employeeDetails
+
+    Object.keys(employeeClone).map((keys) => {
+      let selectedEmployee = employeeClone[keys];
+      if (selectedEmployee.employeeId == indexToDelete) {
+        employeeClone[keys] = employeeDetails;
+        delete employeeClone[indexToDelete[0]];
+      }
+    });
+
+    console.log("deleted row=>",employeeClone);
+    
+    setEmployeeDetails({...employeeClone});
+  };
 
   return (
     <>
       <h5 className="header-margin">
         <strong>Employee Registration :</strong>
-        <Button size="sm" className="add-btn-margin" onClick={handleShowAdd} > Add Employees</Button>     
-     </h5>
+        <Button size="sm" className="add-btn-margin" onClick={handleShowAdd}>
+          {" "}
+          Add Employees
+        </Button>
+      </h5>
 
       <div className="set-table-margin">
         <Table striped bordered hover size="sm" className="set-table-margin">
@@ -130,8 +144,7 @@ const EmployeesPage = () => {
             </tr>
           </thead>
           <tbody>
-
-          { selectedEmp.length > 0 && (
+            {selectedEmp.length > 0 && (
               <tr>
                 <Button
                   variant="secondary"
@@ -141,59 +154,56 @@ const EmployeesPage = () => {
                 >
                   Edit
                 </Button>
-                <Button variant="secondary" size="sm" className="btn-margin">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="btn-margin"
+                  onClick={() => deleteHandler(selectedEmp)}
+                >
                   Delete
                 </Button>
               </tr>
             )}
 
-           {Object.keys(employeeDetails).length>0 && Object.values(employeeDetails).map((emp,index)=>{
-             return(
-               <>
-                   
-
-
-                  <tr key={index}>
-                    <td><input
-                        type="checkbox"
-                        className="checkbox-margin"
-                        checked={selectedEmp.includes(emp.employeeId)}
-                        onChange={() => onCheckDisplayButtons(emp.employeeId)}
-                      />
-                    </td>
-                    <td>{index+1}</td>
-                    <td>{emp.employeeId}</td>
-                    <td>
-                    {emp.firstname}
-                    </td>
-                    <td>
-                      {emp.lastname}
-                    </td>
-                    <td>
-                      {emp.email}
-                    </td>
-                  </tr>
-               </>
-             )
-           })}
-        
+            {Object.keys(employeeDetails).length > 0 &&
+              Object.values(employeeDetails).map((emp, index) => {
+                return (
+                  <>
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          className="checkbox-margin"
+                          checked={selectedEmp.includes(emp.employeeId)}
+                          onChange={() => onCheckDisplayButtons(emp.employeeId)}
+                        />
+                      </td>
+                      <td>{index + 1}</td>
+                      <td>{emp.employeeId}</td>
+                      <td>{emp.firstname}</td>
+                      <td>{emp.lastname}</td>
+                      <td>{emp.email}</td>
+                    </tr>
+                  </>
+                );
+              })}
           </tbody>
         </Table>
 
         <div>
-           <AddEmployeesModal 
-            showAdd={showAdd} 
+          <AddEmployeesModal
+            showAdd={showAdd}
             employeeDetails={employeeDetails}
-            handleOnChange={handleOnChange} 
-            handleCloseAdd={handleCloseAdd} 
+            handleOnChange={handleOnChange}
+            handleCloseAdd={handleCloseAdd}
             handleOnAdd={handleOnAdd}
-            /> 
-         </div>    
+          />
+        </div>
 
         <div>
-          <EditEmployeesModal 
-            showEdit={showEdit} 
-            handleCloseEdit={handleCloseEdit} 
+          <EditEmployeesModal
+            showEdit={showEdit}
+            handleCloseEdit={handleCloseEdit}
             selectedEmployeeForEdit={selectedEmployeeForEdit}
             handleUpdateData={handleUpdateData}
           />
