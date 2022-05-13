@@ -5,13 +5,17 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const EditEmployeesModal=({showEdit,handleCloseEdit,selectedEmployeeForEdit,handleUpdateState,handleOnChangeEdit})=> {
+const EditEmployeesModal=({showEdit,handleCloseEdit,selectedEmployeeForEdit,handleUpdateData})=> {
   console.log(selectedEmployeeForEdit)
   const [employee,setEmployee] = useState({})
   
   useEffect(()=>{
     setEmployee(selectedEmployeeForEdit)
   },[selectedEmployeeForEdit])
+
+const handleOnChangeEdit = (event) => {
+    setEmployee({...employee,[event.target.name]:event.target.value})
+  };
 
   return (
     <>
@@ -38,7 +42,7 @@ const EditEmployeesModal=({showEdit,handleCloseEdit,selectedEmployeeForEdit,hand
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter First Name"  name="firstname"
-                      value={employee.firstname}  onChange={(e)=> setEmployee({...employee, firstname:e.target.value}) }/>
+                      value={employee.firstname}  onChange={handleOnChangeEdit}/>
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -47,7 +51,7 @@ const EditEmployeesModal=({showEdit,handleCloseEdit,selectedEmployeeForEdit,hand
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter Last Name" name="lastname"
-                      value={employee.lastname}  onChange={(e)=> setEmployee({...employee, lastname:e.target.value}) }/>
+                      value={employee.lastname}  onChange={handleOnChangeEdit }/>
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3">
@@ -56,13 +60,13 @@ const EditEmployeesModal=({showEdit,handleCloseEdit,selectedEmployeeForEdit,hand
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter email"  name="email"
-                      value={employee.email}  onChange={(e)=> setEmployee({...employee, email:e.target.value}) }/>
+                      value={employee.email}  onChange={handleOnChangeEdit}/>
                   </Col>
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="primary" onClick={()=>handleUpdateState({...employee})}>
+              <Button variant="primary" onClick={()=>handleUpdateData(employee)}>
                 Update
               </Button>
               <Button variant="secondary" onClick={handleCloseEdit}>

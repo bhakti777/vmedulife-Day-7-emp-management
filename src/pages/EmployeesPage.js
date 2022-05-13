@@ -33,7 +33,7 @@ const EmployeesPage = () => {
   const handleShowEdit = () =>{
     if(selectedEmp.length > 0){
       
-     let [selectedEmployee] = Object.values(employees).filter(item=> item.employeeId == selectedEmp[0])
+     let [selectedEmployee] = Object.values(employeeDetails).filter(item=> item.employeeId == selectedEmp[0])
     
       if(selectedEmployee != undefined){
         setSelectedEmployeeForEdit(selectedEmployee)
@@ -45,39 +45,34 @@ const EmployeesPage = () => {
   } 
   const handleCloseEdit = () => setShowEdit(false);
 
-  
-
-  const [addShowNewRow, setAddShowNewRow] = useState(false); //new input box row
-  const [employees, setEmployees] = useState(initialState); //to add new row employees in table
+    const [employeeDetails, setEmployeeDetails] = useState(initialState); //to add new row employees in table
   const [formState, setFormState] = useState({}); //fetch input value
   const [selectedEmp,setSelectedEmp]=useState([]);
-
   const [selectedEmployeeForEdit, setSelectedEmployeeForEdit] = useState({});
+  const [updatedEmployee,setUpdatedEmployee]=useState({})
 
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
+
+  console.log("formstate=>",formState)
   console.log("formstate=>",formState)
 
-  // const handleOnChangeEdit = (event) => {
-  //   setSelectedEmp({ ...selectedEmp, [event.target.name]: event.target.value });
-  // };
-  console.log("formstate=>",formState)
-
+  
   const handleOnAdd = () => {
-    console.log({ ...employees, formState })
+    console.log({ ...employeeDetails, formState })
 
-    let employeesData=employees
+    let employeesData=employeeDetails
     let employeeId=formState["employeeId"] //handling object keys 
     employeesData[employeeId]=formState
-    setEmployees({ ...employees });
+    setEmployeeDetails({ ...employeesData});
     setFormState("")
     console.log("data",employeesData)
-  };
-  console.log("employees", employees);
+  }; 
+  console.log("employeesDetails", employeeDetails);
 
   const onCheckDisplayButtons = (employeeId) => {
-   console.log("emp id",employeeId)
+   console.log("emp id",employeeId)  
    let selectedEmployees = selectedEmp;
    console.log(selectedEmployees);
    console.log(selectedEmployees.includes(employeeId)); 
@@ -96,9 +91,24 @@ const EmployeesPage = () => {
   };
   console.log("selected employee=>",selectedEmp)
 
-  const handleUpdateData=()=>{
-    // const employeeClone=Object.values(employees)
-    // const updatedData=employeeClone
+  const handleUpdateData=(employee)=>{
+
+    // employeeDetails[selectedEmployeeForEdit]=employee
+  
+    const employeesList = employeeDetails;
+    
+    // updatedList
+    const employeeId = employee["employeeId"]
+    
+    Object.keys(employeesList).map(keys=>{
+      let selectedEmployee = employeesList[keys];
+      if(selectedEmployee.employeeId == employeeId){
+          employeesList[keys] = employee;
+      }
+    })
+    
+    setEmployeeDetails({...employeesList})
+    console.log("updated employees=>",employeesList)
   }
 
 
@@ -139,7 +149,7 @@ const EmployeesPage = () => {
               </tr>
             )}
 
-           {Object.keys(employees).length>0 && Object.values(employees).map((emp,index)=>{
+           {Object.keys(employeeDetails).length>0 && Object.values(employeeDetails).map((emp,index)=>{
              return(
                <>
                    
@@ -175,7 +185,7 @@ const EmployeesPage = () => {
         <div>
            <AddEmployeesModal 
             showAdd={showAdd} 
-            employees={employees}
+            employeeDetails={employeeDetails}
             handleOnChange={handleOnChange} 
             handleCloseAdd={handleCloseAdd} 
             handleOnAdd={handleOnAdd}
@@ -188,7 +198,6 @@ const EmployeesPage = () => {
             handleCloseEdit={handleCloseEdit} 
             selectedEmployeeForEdit={selectedEmployeeForEdit}
             handleUpdateData={handleUpdateData}
-            // handleOnChangeEdit={handleOnChangeEdit}
           />
         </div>
       </div>

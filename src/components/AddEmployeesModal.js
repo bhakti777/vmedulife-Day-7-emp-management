@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const AddEmployeesModal=({showAdd,employees,handleOnChange,handleCloseAdd,handleOnAdd})=> {
+const AddEmployeesModal=({showAdd,employeeDetails,handleOnChange,handleCloseAdd,handleOnAdd})=> {
   return (
     <>
        <Modal show={showAdd} onHide={handleCloseAdd}>
@@ -22,7 +22,7 @@ const AddEmployeesModal=({showAdd,employees,handleOnChange,handleCloseAdd,handle
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter your Id"  name="employeeId"
-                      value={employees.employeeId}
+                      value={employeeDetails.employeeId}
                       onChange={handleOnChange}/>
                   </Col>
                 </Form.Group>
@@ -33,7 +33,7 @@ const AddEmployeesModal=({showAdd,employees,handleOnChange,handleCloseAdd,handle
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter First Name"  name="firstname"
-                      value={employees.firstname}
+                      value={employeeDetails.firstname}
                       onChange={handleOnChange}/>
                   </Col>
                 </Form.Group>
@@ -43,7 +43,7 @@ const AddEmployeesModal=({showAdd,employees,handleOnChange,handleCloseAdd,handle
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter Last Name" name="lastname"
-                      value={employees.lastname}
+                      value={employeeDetails.lastname}
                       onChange={handleOnChange}/>
                   </Col>
                 </Form.Group>
@@ -53,7 +53,7 @@ const AddEmployeesModal=({showAdd,employees,handleOnChange,handleCloseAdd,handle
                   </Form.Label>
                   <Col sm="8">
                     <Form.Control placeholder="Enter email"   name="email"
-                      value={employees.email}
+                      value={employeeDetails.email}
                       onChange={handleOnChange}/>
                   </Col>
                 </Form.Group>
