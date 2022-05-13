@@ -93,16 +93,14 @@ const EmployeesPage = () => {
 
   const handleUpdateData=(employee)=>{
 
-    // employeeDetails[selectedEmployeeForEdit]=employee
-  
     const employeesList = employeeDetails;
     
     // updatedList
-    const employeeId = employee["employeeId"]
+    const updatedId = employee["employeeId"]
     
     Object.keys(employeesList).map(keys=>{
       let selectedEmployee = employeesList[keys];
-      if(selectedEmployee.employeeId == employeeId){
+      if(selectedEmployee.employeeId == updatedId){
           employeesList[keys] = employee;
       }
     })
