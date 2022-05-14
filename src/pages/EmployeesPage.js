@@ -111,7 +111,7 @@ const EmployeesPage = () => {
         delete employeeClone[selectedEmployee.employeeId];
       }
     });
-    setSelectedEmp([]) //after selecting for next selection empty earlier selectedEmp ID
+    setSelectedEmp([]) //make earlier key selection empty 
     
     // console.log("deleted row=>",employeeClone);
     
