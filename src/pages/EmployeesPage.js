@@ -30,7 +30,7 @@ const EmployeesPage = () => {
   const [showEdit, setShowEdit] = useState(false);
 
   const handleShowEdit = () => {
-    if (selectedEmp.length > 0) {
+      if (selectedEmp.length > 0) {
       let [selectedEmployee] = Object.values(employeeDetails).filter(
         (item) => item.employeeId == selectedEmp[0]
       );
@@ -47,7 +47,6 @@ const EmployeesPage = () => {
   const [formState, setFormState] = useState({}); //fetch input value
   const [selectedEmp, setSelectedEmp] = useState([]);
   const [selectedEmployeeForEdit, setSelectedEmployeeForEdit] = useState({});
-  const [updatedEmployee, setUpdatedEmployee] = useState({});
 
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
@@ -101,18 +100,20 @@ const EmployeesPage = () => {
     console.log("updated employees=>", employeesList);
   };
 
-  const deleteHandler = (indexToDelete) => {
+  const deleteHandler = () => {
     const employeeClone = employeeDetails
-
     Object.keys(employeeClone).map((keys) => {
       let selectedEmployee = employeeClone[keys];
-      if (selectedEmployee.employeeId == indexToDelete) {
+      console.log("selectedEmployee.employeeId",selectedEmployee.employeeId);
+      console.log("index to delete row=>",);
+      if (selectedEmp.includes(selectedEmployee.employeeId)) {
         employeeClone[keys] = employeeDetails;
-        delete employeeClone[indexToDelete[0]];
+        delete employeeClone[selectedEmployee.employeeId];
       }
     });
-
-    console.log("deleted row=>",employeeClone);
+    setSelectedEmp([]) //after selecting for next selection empty earlier selectedEmp ID
+    
+    // console.log("deleted row=>",employeeClone);
     
     setEmployeeDetails({...employeeClone});
   };
