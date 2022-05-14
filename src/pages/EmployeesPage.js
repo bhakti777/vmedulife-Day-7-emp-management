@@ -7,14 +7,12 @@ import AddEmployeesModal from "../components/AddEmployeesModal";
 const EmployeesPage = () => {
   const initialState = {
     101: {
-      isSelected: false,
       employeeId: "101",
       firstname: "Bhakti",
       lastname: "Soman",
       email: "bhakti@gmail.com",
     },
     102: {
-      isSelected: false,
       employeeId: "102",
       firstname: "Sanika",
       lastname: "Soman",
@@ -52,7 +50,6 @@ const EmployeesPage = () => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
 
-  console.log("formstate=>", formState);
   console.log("formstate=>", formState);
 
   const handleOnAdd = () => {
