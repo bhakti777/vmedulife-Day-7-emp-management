@@ -102,10 +102,6 @@ const EmployeesPage = () => {
   };
 
   const deleteHandler = (indexToDelete) => {
-    // if(employeeClone[indexToDelete[0]]!=undefined){
-    //   console.log("indexToDelete", indexToDelete[0]);
-    //   delete employeeClone[indexToDelete[0]];
-    // }
     const employeeClone = employeeDetails
 
     Object.keys(employeeClone).map((keys) => {
@@ -126,7 +122,6 @@ const EmployeesPage = () => {
       <h5 className="header-margin">
         <strong>Employee Registration :</strong>
         <Button size="sm" className="add-btn-margin" onClick={handleShowAdd}>
-          {" "}
           Add Employees
         </Button>
       </h5>
