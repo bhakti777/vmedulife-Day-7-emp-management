@@ -5,20 +5,7 @@ import EditEmployeesModal from "../components/EditEmployeesModal";
 import AddEmployeesModal from "../components/AddEmployeesModal";
 
 const EmployeesPage = () => {
-  const initialState = {
-    101: {
-      employeeId: "101",
-      firstname: "Bhakti",
-      lastname: "Soman",
-      email: "bhakti@gmail.com",
-    },
-    102: {
-      employeeId: "102",
-      firstname: "Sanika",
-      lastname: "Soman",
-      email: "sanika@gmail.com",
-    },
-  };
+  const initialState = {};
 
   //Modal: add ,edit employees
   const [showAdd, setShowAdd] = useState(false);
@@ -28,7 +15,7 @@ const EmployeesPage = () => {
   const [showEdit, setShowEdit] = useState(false);
 
   const handleShowEdit = () => {
-      if (selectedEmp.length > 0) {
+    if (selectedEmp.length > 0) {
       let [selectedEmployee] = Object.values(employeeDetails).filter(
         (item) => item.employeeId == selectedEmp[0]
       );
@@ -49,8 +36,27 @@ const EmployeesPage = () => {
   const handleOnChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
-
   console.log("formstate=>", formState);
+
+  const handleOnChangeAllSelect=()=>{
+    let employeesDetailsClone = employeeDetails;
+    let selectedEmpClone=selectedEmp
+   
+    if(selectedEmpClone.length == Object.keys(employeesDetailsClone).length ){
+      selectedEmpClone = []
+     }else{ 
+      Object.keys(employeesDetailsClone).map((keys)=>{
+        selectedEmpClone.push(keys);
+      });
+        console.log(selectedEmpClone);
+    }
+
+
+  setSelectedEmp([...selectedEmpClone])
+    console.log("selected box ",selectedEmpClone);
+
+  }
+
 
   const handleOnAdd = () => {
     console.log({ ...employeeDetails, formState });
@@ -98,21 +104,22 @@ const EmployeesPage = () => {
   };
 
   const deleteHandler = () => {
-    const employeeClone = employeeDetails
+    const employeeClone = employeeDetails;
     Object.keys(employeeClone).map((keys) => {
       let selectedEmployee = employeeClone[keys];
-      console.log("selectedEmployee.employeeId",selectedEmployee.employeeId);
-      console.log("index to delete row=>",);
+      console.log("selectedEmployee.employeeId", selectedEmployee.employeeId);
+      console.log("index to delete row=>");
       if (selectedEmp.includes(selectedEmployee.employeeId)) {
         employeeClone[keys] = employeeDetails;
         delete employeeClone[selectedEmployee.employeeId];
       }
+      
     });
-    setSelectedEmp([]) //make earlier key selection empty 
-    
+    setSelectedEmp([]); //make earlier key selection empty
+
     // console.log("deleted row=>",employeeClone);
-    
-    setEmployeeDetails({...employeeClone});
+
+    setEmployeeDetails({ ...employeeClone });
   };
 
   return (
@@ -128,7 +135,13 @@ const EmployeesPage = () => {
         <Table striped bordered hover size="sm" className="set-table-margin">
           <thead>
             <tr>
-              <th></th>
+              <th> <input
+                          type="checkbox"
+                          className="checkbox-margin"
+                          checked={selectedEmp.length == Object.keys(employeeDetails).length}
+                          onChange={handleOnChangeAllSelect}
+                        />
+                        All Select</th>
               <th>Sr.No</th>
               <th>Employee Id</th>
               <th>First Name</th>
