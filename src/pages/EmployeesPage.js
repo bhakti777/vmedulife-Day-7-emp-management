@@ -26,6 +26,8 @@ const EmployeesPage = () => {
       }
     }
   };
+
+
   const handleCloseEdit = () => setShowEdit(false);
 
   const [employeeDetails, setEmployeeDetails] = useState(initialState); //to add new row employees in table
@@ -66,7 +68,8 @@ const EmployeesPage = () => {
     employeesData[employeeId] = formState;
     setEmployeeDetails({ ...employeesData });
     setFormState("");
-    console.log("data", employeesData);
+    handleCloseAdd() //called modal close function
+        console.log("data", employeesData);
   };
   console.log("employeesDetails", employeeDetails);
 
@@ -100,6 +103,7 @@ const EmployeesPage = () => {
       }
     });
     setEmployeeDetails({ ...employeesList });
+    handleCloseEdit();
     console.log("updated employees=>", employeesList);
   };
 
